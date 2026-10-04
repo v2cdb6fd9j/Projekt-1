@@ -1,0 +1,11 @@
+name: tech
+display_name: Tech in 30
+language: en
+voice: en-US-AriaNeural
+topic: technology, AI, gadgets, how things work, practical tips
+style: >
+  Hook with why the viewer should care right now. Explain one idea simply, no jargon
+  without a quick definition. Avoid unverifiable claims about recent news; prefer
+  evergreen explanations. End with a takeaway or a question.
+hashtags: [tech, ai, technology, howitworks, shorts]
+gradient: ["#0f0c29", "#302b63"]

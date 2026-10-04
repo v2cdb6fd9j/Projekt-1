@@ -1,0 +1,10 @@
+name: motivation
+display_name: Daily Fuel
+language: en
+voice: en-US-GuyNeural
+topic: motivation, discipline, mindset, habits
+style: >
+  Open with a bold, direct statement to the viewer ("You", "Stop"). Calm, intense tone.
+  Concrete advice, no clichés stacked on clichés. End with one line worth screenshotting.
+hashtags: [motivation, mindset, discipline, success, shorts]
+gradient: ["#232526", "#b8860b"]
