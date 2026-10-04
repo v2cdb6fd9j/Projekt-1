@@ -1,0 +1,18 @@
+# Example fight. Replace clip1.mp4 / clip2.mp4 with your AI-generated clips.
+# Hit times "t" are seconds within the ORIGINAL clip.
+title: SHADOW vs. BLAZE
+# music: music.mp3        # optional, royalty-free only
+# music_volume: 0.25
+clips:
+  - file: clip1.mp4
+    hits:
+      - {t: 0.8, sfx: whoosh, shake: false}
+      - {t: 1.2, sfx: slash, flash: true}
+      - {t: 2.6, sfx: clang}
+      - {t: 3.8, sfx: impact, flash: true}
+  - file: clip2.mp4
+    speed: 0.5            # slow motion for the finishing blow
+    keep_audio: false
+    hits:
+      - {t: 0.3, sfx: charge, shake: false}
+      - {t: 1.6, sfx: explosion, flash: true, volume: 1.2}

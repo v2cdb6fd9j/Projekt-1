@@ -3,3 +3,4 @@ output/
 *.mp4
 *.mp3
 !assets/**/.gitkeep
+assets/sfx/_generated/
