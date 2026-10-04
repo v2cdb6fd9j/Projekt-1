@@ -1,4 +1,4 @@
-"""Command line: python -m shorts.cli make --channel facts [--idea ...] [--upload]"""
+"""Command line: python -m shorts.cli make|batch ..."""
 import argparse
 import json
 import os
@@ -23,7 +23,7 @@ def past_titles(channel: str) -> list[str]:
         return [json.loads(line)["title"] for line in f if line.strip()]
 
 
-def make(channel_name: str, idea: str | None, script_file: str | None, do_upload: bool) -> dict:
+def make(channel_name: str, idea: str | None, script_file: str | None) -> dict:
     channel = load_channel(channel_name)
     out_dir = f"output/{channel_name}"
     os.makedirs(out_dir, exist_ok=True)
@@ -49,27 +49,45 @@ def make(channel_name: str, idea: str | None, script_file: str | None, do_upload
         f.write(f"{data['title']}\n\n{caption}\n")
 
     result = {"title": data["title"], "video": video, "caption": caption}
-    if do_upload:
-        from . import upload_youtube
-
-        result["youtube"] = upload_youtube.upload(
-            channel, video, data["title"], caption, list(dict.fromkeys(hashtags))
-        )
     with open(f"{out_dir}/history.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(result) + "\n")
     return result
 
 
+def batch(count: int, channels: list[str]) -> None:
+    """Make `count` videos per channel and write output/UPLOAD.md as a manual upload checklist."""
+    rows = []
+    for ch in channels:
+        for _ in range(count):
+            try:
+                r = make(ch, None, None)
+            except Exception as e:  # keep going if one video fails
+                print(f"[{ch}] failed: {e}")
+                continue
+            rows.append((ch, r))
+            print(f"[{ch}] {r['video']}")
+    with open("output/UPLOAD.md", "w", encoding="utf-8") as f:
+        f.write("# Upload checklist\n\nPost each video on YouTube Shorts, TikTok and Instagram Reels.\n\n")
+        for ch, r in rows:
+            f.write(f"## [ ] {ch}: {r['title']}\n\nFile: `{r['video']}`\n\n```\n{r['title']}\n\n{r['caption']}\n```\n\n")
+
+
 def main():
     p = argparse.ArgumentParser(prog="shorts")
     sub = p.add_subparsers(dest="cmd", required=True)
+    channels = ["facts", "motivation", "tech"]
     m = sub.add_parser("make", help="create one short")
-    m.add_argument("--channel", required=True, choices=["facts", "motivation", "tech"])
+    m.add_argument("--channel", required=True, choices=channels)
     m.add_argument("--idea")
     m.add_argument("--script-file", help="JSON with title/narration (skips the Claude API)")
-    m.add_argument("--upload", action="store_true", help="upload to YouTube after rendering")
+    b = sub.add_parser("batch", help="create several shorts per channel + upload checklist")
+    b.add_argument("--count", type=int, default=3, help="videos per channel")
+    b.add_argument("--channel", choices=channels, action="append", help="repeatable; default all")
     a = p.parse_args()
-    print(json.dumps(make(a.channel, a.idea, a.script_file, a.upload), indent=2))
+    if a.cmd == "make":
+        print(json.dumps(make(a.channel, a.idea, a.script_file), indent=2))
+    else:
+        batch(a.count, a.channel or channels)
 
 
 if __name__ == "__main__":

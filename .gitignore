@@ -1,6 +1,5 @@
 __pycache__/
 output/
-credentials/
 *.mp4
 *.mp3
 !assets/**/.gitkeep

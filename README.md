@@ -16,7 +16,7 @@ export ANTHROPIC_API_KEY=...
 ```
 python -m shorts.cli make --channel facts
 python -m shorts.cli make --channel tech --idea "How does GPS work?"
-python -m shorts.cli make --channel motivation --upload     # + YouTube-Upload
+python -m shorts.cli batch --count 3     # 3 Videos pro Kanal + output/UPLOAD.md
 ```
 Ergebnis in `output/<kanal>/`: `.mp4`, `.txt` (Titel + Caption mit Hashtags).
 Ohne API-Key: `--script-file skript.json` mit `{"title": ..., "narration": ...}`.
@@ -26,10 +26,9 @@ Ohne API-Key: `--script-file skript.json` mit `{"title": ..., "narration": ...}`
 - `assets/backgrounds/[kanal/]*.mp4`: eigene (lizenzfreie!) Hintergrundclips, sonst animierter Farbverlauf
 - `assets/music/*.mp3`: optionale Hintergrundmusik (nur lizenzfreie)
 
-## Plattformen
-- **YouTube Shorts**: Upload eingebaut (`credentials/client_secret.json` nötig, siehe `shorts/upload_youtube.py`).
-- **TikTok / Instagram Reels**: Die offiziellen APIs verlangen App-Freigabe bzw. ein Business-Konto.
-  Bis dahin: fertige `.mp4` + `.txt` aus `output/` hochladen.
+## Hochladen (manuell)
+`output/UPLOAD.md` ist deine Checkliste: pro Video Datei, Titel und Caption zum Kopieren.
+Jedes Video auf YouTube Shorts, TikTok und Instagram Reels posten.
 
 ## Hinweise für echte Reichweite
 Views lassen sich nicht garantieren. Was hilft: täglich posten, Hook in den ersten
